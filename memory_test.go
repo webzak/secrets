@@ -17,6 +17,6 @@ func TestMemory(t *testing.T) {
 func TestMemoryAbsent(t *testing.T) {
 	s := InitMemoryStorage()
 	secret, err := s.Get("absent")
-	assert.Equal(t, &SecretNotFound{"absent"}, err)
+	assert.True(t, IsNotFound(err))
 	assert.Equal(t, "", secret)
 }

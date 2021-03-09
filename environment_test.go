@@ -46,6 +46,6 @@ func TestEnvironmentWithPrefixAngUppercase(t *testing.T) {
 func TestEnvironmentAbsent(t *testing.T) {
 	s := InitEnvironmentStorage("", true)
 	secret, err := s.Get("absent")
-	assert.Equal(t, &SecretNotFound{"absent"}, err)
+	assert.True(t, IsNotFound(err))
 	assert.Equal(t, "", secret)
 }

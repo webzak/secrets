@@ -9,7 +9,7 @@ import (
 func TestNotInitialized(t *testing.T) {
 	storage = nil
 	_, err := Get("foo")
-	assert.Equal(t, &StorageIsNotInitialized{}, err)
+	assert.True(t, IsNotInitialized(err))
 }
 
 func TestGet(t *testing.T) {
@@ -19,6 +19,6 @@ func TestGet(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "bar", secret)
 	secret, err = Get("absent")
-	assert.Equal(t, &SecretNotFound{"absent"}, err)
+	assert.True(t, IsNotFound(err))
 	assert.Equal(t, "", secret)
 }
