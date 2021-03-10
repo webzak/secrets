@@ -7,7 +7,7 @@ import (
 )
 
 func TestMemory(t *testing.T) {
-	s := InitMemoryStorage()
+	s := NewMemoryStorage()
 	s.Set("foo", "bar")
 	secret, err := s.Get("foo")
 	assert.Nil(t, err)
@@ -15,7 +15,7 @@ func TestMemory(t *testing.T) {
 }
 
 func TestMemoryAbsent(t *testing.T) {
-	s := InitMemoryStorage()
+	s := NewMemoryStorage()
 	secret, err := s.Get("absent")
 	assert.True(t, IsNotFound(err))
 	assert.Equal(t, "", secret)

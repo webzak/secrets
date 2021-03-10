@@ -14,3 +14,12 @@ func Get(name string) (string, error) {
 	}
 	return storage.Get(name)
 }
+
+// Must get provides the proxy to Storage.Get of initialized package storage, it panics if secret is not found
+func MustGet(name string) string {
+	secret, err := Get(name)
+	if err != nil {
+		panic(err)
+	}
+	return secret
+}

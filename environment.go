@@ -11,9 +11,16 @@ type EnvironmentStorage struct {
 	uppercase bool
 }
 
+// NewMemoryStorage creates new environment storage
+func NewEnvironmentStorage(prefix string, uppercase bool) *EnvironmentStorage {
+	es := &EnvironmentStorage{prefix, uppercase}
+	storage = es
+	return es
+}
+
 // InitMemoryStorage creates new environment storage and sets it as package storage
 func InitEnvironmentStorage(prefix string, uppercase bool) *EnvironmentStorage {
-	es := &EnvironmentStorage{prefix, uppercase}
+	es := NewEnvironmentStorage(prefix, uppercase)
 	storage = es
 	return es
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func TestEnvironmentWithoutNameTransform(t *testing.T) {
-	s := InitEnvironmentStorage("", false)
+	s := NewEnvironmentStorage("", false)
 	s.Set("foo", "bar")
 	assert.Equal(t, "bar", os.Getenv("foo"))
 	secret, err := s.Get("foo")
@@ -17,7 +17,7 @@ func TestEnvironmentWithoutNameTransform(t *testing.T) {
 }
 
 func TestEnvironmentWithPrefix(t *testing.T) {
-	s := InitEnvironmentStorage("my_", false)
+	s := NewEnvironmentStorage("my_", false)
 	s.Set("foo", "bar")
 	assert.Equal(t, "bar", os.Getenv("my_foo"))
 	secret, err := s.Get("foo")
@@ -26,7 +26,7 @@ func TestEnvironmentWithPrefix(t *testing.T) {
 }
 
 func TestEnvironmentWithUppercase(t *testing.T) {
-	s := InitEnvironmentStorage("", true)
+	s := NewEnvironmentStorage("", true)
 	s.Set("foo", "bar")
 	assert.Equal(t, "bar", os.Getenv("FOO"))
 	secret, err := s.Get("foo")
@@ -35,7 +35,7 @@ func TestEnvironmentWithUppercase(t *testing.T) {
 }
 
 func TestEnvironmentWithPrefixAngUppercase(t *testing.T) {
-	s := InitEnvironmentStorage("my_", true)
+	s := NewEnvironmentStorage("my_", true)
 	s.Set("foo", "bar")
 	assert.Equal(t, "bar", os.Getenv("MY_FOO"))
 	secret, err := s.Get("foo")
@@ -44,7 +44,7 @@ func TestEnvironmentWithPrefixAngUppercase(t *testing.T) {
 }
 
 func TestEnvironmentAbsent(t *testing.T) {
-	s := InitEnvironmentStorage("", true)
+	s := NewEnvironmentStorage("", true)
 	secret, err := s.Get("absent")
 	assert.True(t, IsNotFound(err))
 	assert.Equal(t, "", secret)

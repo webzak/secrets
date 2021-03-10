@@ -5,10 +5,16 @@ type MemoryStorage struct {
 	data map[string]string
 }
 
-// InitMemoryStorage creates new memory storage and sets it as package storage
-func InitMemoryStorage() *MemoryStorage {
+// NewMemoryStorage creates new memory storage
+func NewMemoryStorage() *MemoryStorage {
 	ms := &MemoryStorage{}
 	ms.data = make(map[string]string)
+	return ms
+}
+
+// InitMemoryStorage creates new memory storage and sets it as package storage
+func InitMemoryStorage() *MemoryStorage {
+	ms := NewMemoryStorage()
 	storage = ms
 	return ms
 }
