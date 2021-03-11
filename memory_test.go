@@ -3,7 +3,7 @@ package secrets
 import (
 	"testing"
 
-	assert "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMemory(t *testing.T) {

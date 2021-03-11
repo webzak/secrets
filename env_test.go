@@ -4,11 +4,11 @@ import (
 	"os"
 	"testing"
 
-	assert "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestEnvironmentWithoutNameTransform(t *testing.T) {
-	s := NewEnvironmentStorage("", false)
+func TestEnvWithoutNameTransform(t *testing.T) {
+	s := NewEnvStorage("", false)
 	s.Set("foo", "bar")
 	assert.Equal(t, "bar", os.Getenv("foo"))
 	secret, err := s.Get("foo")
@@ -16,8 +16,8 @@ func TestEnvironmentWithoutNameTransform(t *testing.T) {
 	assert.Equal(t, "bar", secret)
 }
 
-func TestEnvironmentWithPrefix(t *testing.T) {
-	s := NewEnvironmentStorage("my_", false)
+func TestEnvWithPrefix(t *testing.T) {
+	s := NewEnvStorage("my_", false)
 	s.Set("foo", "bar")
 	assert.Equal(t, "bar", os.Getenv("my_foo"))
 	secret, err := s.Get("foo")
@@ -25,8 +25,8 @@ func TestEnvironmentWithPrefix(t *testing.T) {
 	assert.Equal(t, "bar", secret)
 }
 
-func TestEnvironmentWithUppercase(t *testing.T) {
-	s := NewEnvironmentStorage("", true)
+func TestEnvWithUppercase(t *testing.T) {
+	s := NewEnvStorage("", true)
 	s.Set("foo", "bar")
 	assert.Equal(t, "bar", os.Getenv("FOO"))
 	secret, err := s.Get("foo")
@@ -34,8 +34,8 @@ func TestEnvironmentWithUppercase(t *testing.T) {
 	assert.Equal(t, "bar", secret)
 }
 
-func TestEnvironmentWithPrefixAngUppercase(t *testing.T) {
-	s := NewEnvironmentStorage("my_", true)
+func TestEnvWithPrefixAngUppercase(t *testing.T) {
+	s := NewEnvStorage("my_", true)
 	s.Set("foo", "bar")
 	assert.Equal(t, "bar", os.Getenv("MY_FOO"))
 	secret, err := s.Get("foo")
@@ -43,8 +43,8 @@ func TestEnvironmentWithPrefixAngUppercase(t *testing.T) {
 	assert.Equal(t, "bar", secret)
 }
 
-func TestEnvironmentAbsent(t *testing.T) {
-	s := NewEnvironmentStorage("", true)
+func TestEnvAbsent(t *testing.T) {
+	s := NewEnvStorage("", true)
 	secret, err := s.Get("absent")
 	assert.True(t, IsNotFound(err))
 	assert.Equal(t, "", secret)

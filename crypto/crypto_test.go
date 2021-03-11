@@ -3,7 +3,7 @@ package crypto
 import (
 	"testing"
 
-	assert "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAesGcm(t *testing.T) {
@@ -13,9 +13,8 @@ func TestAesGcm(t *testing.T) {
 	pt := "one two three four five"
 	ct, err := c.Encrypt([]byte(pt))
 	assert.Nil(t, err)
-	t.Logf("%x", ct)
 
 	rpt, err := c.Decrypt(ct)
 	assert.Nil(t, err)
-	t.Logf("%x", rpt)
+	assert.Equal(t, pt, string(rpt))
 }
