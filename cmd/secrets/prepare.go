@@ -8,9 +8,9 @@ import (
 )
 
 func prepare() error {
-	var storage = flag.String("storage", "", "")
-	var prefix = flag.String("prefix", "", "")
-	var uppercase = flag.Bool("uppercase", false, "")
+	storage := flag.String("storage", "", "")
+	prefix := flag.String("prefix", "", "")
+	uppercase := flag.Bool("uppercase", false, "")
 
 	flag.Parse()
 	var err error

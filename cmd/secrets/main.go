@@ -17,7 +17,7 @@ func main() {
 	case "prepare":
 		err = prepare()
 	case "read":
-		fmt.Println("rd")
+		err = read()
 	case "help":
 		help()
 	default:
