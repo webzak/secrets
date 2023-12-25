@@ -18,3 +18,9 @@ func TestAesGcm(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, pt, string(rpt))
 }
+
+func TestRandomBytes(t *testing.T) {
+	b, err := RandomBytes(32)
+	assert.Nil(t, err)
+	assert.NotNil(t, b)
+}

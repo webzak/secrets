@@ -27,7 +27,7 @@ func (ees *EncEnvStorage) Get(name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	bct, err := crypto.B64ToByte(ct)
+	bct, err := crypto.B64ToBytes(ct)
 	if err != nil {
 		return "", err
 	}
@@ -44,7 +44,7 @@ func (ees *EncEnvStorage) Set(name, secret string) error {
 	if err != nil {
 		return err
 	}
-	return ees.es.Set(name, crypto.ByteToB64(ct))
+	return ees.es.Set(name, crypto.BytesToB64(ct))
 }
 
 // Prepare secret value name and encrypted value
@@ -54,5 +54,5 @@ func (ees *EncEnvStorage) Prepare(name, secret string) (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
-	return ename, crypto.ByteToB64(ct), nil
+	return ename, crypto.BytesToB64(ct), nil
 }

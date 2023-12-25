@@ -22,7 +22,7 @@ func NewEncMapStorage(master, dump string) (*EncMapStorage, error) {
 	s := &EncMapStorage{cipher, map[string]string{}}
 	// decrypt data if not empty
 	if dump != "" {
-		bct, err := crypto.B64ToByte(dump)
+		bct, err := crypto.B64ToBytes(dump)
 		if err != nil {
 			return nil, err
 		}
@@ -63,5 +63,5 @@ func (s *EncMapStorage) Dump() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return crypto.ByteToB64(ct), nil
+	return crypto.BytesToB64(ct), nil
 }

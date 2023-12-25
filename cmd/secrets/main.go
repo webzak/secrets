@@ -18,6 +18,8 @@ func main() {
 		err = prepare()
 	case "read":
 		err = read()
+	case "gen":
+		err = generate()
 	case "help":
 		help()
 	default:
@@ -46,6 +48,10 @@ prepare - prepare secrets
 read - read secret
     options:
         -name <value>  - secret name
-
+gen - generate secret
+    options
+        -t <value> - rand or coin
+        -s <value> - size of entropy in bytes
+        -f <value> - format, can be comma separated hex, b64, bip39
 help - show help`)
 }

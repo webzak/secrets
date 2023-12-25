@@ -6,7 +6,10 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"io"
+
+	"github.com/tyler-smith/go-bip39"
 )
 
 // Cipher provides the interface to encrypt and decrypt the secrets
@@ -57,12 +60,44 @@ func (c *AesGcmCypher) Decrypt(ct []byte) ([]byte, error) {
 
 }
 
-// ByteToB64 encodes to bytes to base64 string
-func ByteToB64(key []byte) string {
+// BytesToB64 encodes to bytes to base64 string
+func BytesToB64(key []byte) string {
 	return base64.RawStdEncoding.EncodeToString(key)
 }
 
 // B64ToBytes converst base64 string to bytes
-func B64ToByte(s string) ([]byte, error) {
+func B64ToBytes(s string) ([]byte, error) {
 	return base64.RawStdEncoding.DecodeString(s)
+}
+
+// RandomBytes create n bytes using crypto/rand
+func RandomBytes(n int) ([]byte, error) {
+	b := make([]byte, n)
+	if _, err := rand.Read(b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+// BytesToBIP39 convets entrypy to BIP39 mnemonic
+func BytesToBIP39(entropy []byte) (string, error) {
+	lb := len(entropy)
+	if lb != 16 && lb != 32 {
+		return "", errors.New("for bip39 the entropy length has to be 16 or 32 bytes")
+	}
+	ret, err := bip39.NewMnemonic(entropy)
+	if err != nil {
+		return "", err
+	}
+	// reverse and verify
+	rev, err := bip39.EntropyFromMnemonic(ret)
+	if err != nil {
+		return "", err
+	}
+	for i := 0; i < len(entropy); i++ {
+		if entropy[i] != rev[i] {
+			return "", errors.New("error reverse mnemonic validation")
+		}
+	}
+	return ret, err
 }
