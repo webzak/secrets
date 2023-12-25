@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 func readLine(hint string) (string, error) {
@@ -20,7 +20,7 @@ func readLine(hint string) (string, error) {
 
 func readPassword(hint string) (string, error) {
 	fmt.Print(hint)
-	data, err := terminal.ReadPassword(int(os.Stdin.Fd()))
+	data, err := term.ReadPassword(int(os.Stdin.Fd()))
 	fmt.Println()
 	return string(data), err
 }

@@ -1,6 +1,7 @@
 package secrets
 
 import (
+	"errors"
 	"os"
 	"testing"
 
@@ -46,6 +47,6 @@ func TestEnvWithPrefixAngUppercase(t *testing.T) {
 func TestEnvAbsent(t *testing.T) {
 	s := NewEnvStorage("", true)
 	secret, err := s.Get("absent")
-	assert.True(t, IsNotFound(err))
+	assert.True(t, errors.Is(err, ErrSecretNotFound))
 	assert.Equal(t, "", secret)
 }

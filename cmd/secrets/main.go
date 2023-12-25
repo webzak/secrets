@@ -47,6 +47,5 @@ read - read secret
     options:
         -name <value>  - secret name
 
-help - show help
-`)
+help - show help`)
 }

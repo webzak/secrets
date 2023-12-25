@@ -1,6 +1,7 @@
 package secrets
 
 import (
+	"errors"
 	"os"
 	"testing"
 
@@ -23,7 +24,7 @@ func TestEncEnvAbsent(t *testing.T) {
 	s, err := NewEncEnvStorage("masterpass", "", true)
 	assert.Nil(t, err)
 	secret, err := s.Get("absent")
-	assert.True(t, IsNotFound(err))
+	assert.True(t, errors.Is(err, ErrSecretNotFound))
 	assert.Equal(t, "", secret)
 }
 

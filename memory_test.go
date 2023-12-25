@@ -1,6 +1,7 @@
 package secrets
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -17,6 +18,6 @@ func TestMemory(t *testing.T) {
 func TestMemoryAbsent(t *testing.T) {
 	s := NewMemoryStorage()
 	secret, err := s.Get("absent")
-	assert.True(t, IsNotFound(err))
+	assert.True(t, errors.Is(err, ErrSecretNotFound))
 	assert.Equal(t, "", secret)
 }

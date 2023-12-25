@@ -1,5 +1,7 @@
 package secrets
 
+import "fmt"
+
 // MemoryStorage does not persist secrets data
 type MemoryStorage struct {
 	data map[string]string
@@ -12,18 +14,11 @@ func NewMemoryStorage() *MemoryStorage {
 	return ms
 }
 
-// InitMemoryStorage creates new memory storage and sets it as package storage
-func InitMemoryStorage() *MemoryStorage {
-	ms := NewMemoryStorage()
-	storage = ms
-	return ms
-}
-
 // Get reads secret from storage
 func (ms *MemoryStorage) Get(name string) (string, error) {
 	secret, ok := ms.data[name]
 	if !ok {
-		return "", &SecretNotFound{name}
+		return "", fmt.Errorf("%w : %s", ErrSecretNotFound, name)
 	}
 	return secret, nil
 }
