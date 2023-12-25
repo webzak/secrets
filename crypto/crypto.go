@@ -12,6 +12,14 @@ import (
 	"github.com/tyler-smith/go-bip39"
 )
 
+var (
+	ErrCreateAESCypher      = errors.New("ErrCreateAESCypher")
+	ErrCreateAESGCM         = errors.New("ErrCreateAESGCM")
+	ErrAESGCMEncrypt        = errors.New("ErrAESGCMEncrypt")
+	ErrCypherTestIsTooShort = errors.New("ErrCypherTestIsTooShort")
+	ErrAESGCMDecrypt        = errors.New("ErrAESGCMDecrypt")
+)
+
 // Cipher provides the interface to encrypt and decrypt the secrets
 type Cipher interface {
 	Encrypt([]byte) ([]byte, error)
@@ -28,11 +36,11 @@ func NewAesGcmCypher(key string) (*AesGcmCypher, error) {
 	bkey := sha256.Sum256([]byte(key))
 	block, err := aes.NewCipher(bkey[:])
 	if err != nil {
-		return nil, &CryptoError{err.Error()}
+		return nil, errors.Join(ErrCreateAESCypher, err)
 	}
 	adead, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, &CryptoError{err.Error()}
+		return nil, errors.Join(ErrCreateAESGCM, err)
 	}
 	return &AesGcmCypher{adead}, nil
 }
@@ -41,7 +49,7 @@ func NewAesGcmCypher(key string) (*AesGcmCypher, error) {
 func (c *AesGcmCypher) Encrypt(pt []byte) ([]byte, error) {
 	nonce := make([]byte, c.adead.NonceSize())
 	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		return nil, &CryptoError{err.Error()}
+		return nil, errors.Join(ErrAESGCMEncrypt, err)
 	}
 	return c.adead.Seal(nonce, nonce, pt, nil), nil
 }
@@ -50,11 +58,11 @@ func (c *AesGcmCypher) Encrypt(pt []byte) ([]byte, error) {
 func (c *AesGcmCypher) Decrypt(ct []byte) ([]byte, error) {
 	n := c.adead.NonceSize()
 	if len(ct) <= n {
-		return nil, &CryptoError{"ct is too short"}
+		return nil, ErrCypherTestIsTooShort
 	}
 	pt, err := c.adead.Open(nil, ct[:n], ct[n:], nil)
 	if err != nil {
-		return nil, &CryptoError{err.Error()}
+		return nil, errors.Join(ErrAESGCMDecrypt, err)
 	}
 	return pt, nil
 
