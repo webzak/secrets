@@ -18,8 +18,10 @@ func main() {
 		err = prepare()
 	case "read":
 		err = read()
-	case "gen":
+	case "generate":
 		err = generate()
+	case "convert":
+		err = convert()
 	case "help":
 		help()
 	default:
@@ -48,7 +50,7 @@ prepare - prepare secrets
 read - read secret
     options:
         -name <value>  - secret name
-gen - generate secret
+generate - generate secret
     options
         -t <value> - rand or coin
         -s <value> - size of entropy in bytes

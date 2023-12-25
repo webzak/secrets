@@ -6,16 +6,15 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/webzak/secrets/crypto"
 	"golang.org/x/term"
 )
 
 func generate() error {
-	genType := flag.String("t", "", "generator type")
+	genType := flag.String("t", "rand", "generator type")
 	size := flag.Int("s", 0, "size in bytes")
-	outType := flag.String("f", "hex", "output type, can be comma separated")
+	format := flag.String("f", "hex", "output type, can be comma separated")
 
 	flag.Parse()
 	var err error
@@ -32,24 +31,22 @@ func generate() error {
 	if err != nil {
 		return err
 	}
-	formats := strings.Split(*outType, ",")
-	for _, f := range formats {
-		f = strings.Trim(f, " ")
-		switch f {
-		case "hex":
-			fmt.Println("hex:", hex.EncodeToString(r))
-		case "b64":
-			fmt.Println("b64:", crypto.BytesToB64(r))
-		case "bip39":
-			v, err := crypto.BytesToBIP39(r)
-			if err != nil {
-				return err
-			}
-			fmt.Println("bip39:", v)
-		default:
-			return fmt.Errorf("format %s is not supported. Use one of hex, b64, bip39", f)
-		}
+	var res string
+	switch *format {
+	case "hex":
+		res = hex.EncodeToString(r)
+	case "b64":
+		res = crypto.BytesToB64(r)
+	case "bip39":
+		res, err = crypto.BytesToBIP39(r)
+	default:
+		err = fmt.Errorf("format %s is not supported. Use one of hex, b64, bip39", *format)
 	}
+
+	if err != nil {
+		return err
+	}
+	fmt.Print(res)
 	return nil
 }
 
