@@ -1,4 +1,4 @@
-package main
+package secrets
 
 import (
 	"bufio"
@@ -8,7 +8,8 @@ import (
 	"golang.org/x/term"
 )
 
-func readLine(hint string) (string, error) {
+// ReadLine reads line with provided hint
+func ReadLine(hint string) (string, error) {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print(hint)
 	s, err := reader.ReadString('\n')
@@ -18,7 +19,8 @@ func readLine(hint string) (string, error) {
 	return s[:len(s)-1], nil
 }
 
-func readPassword(hint string) (string, error) {
+// ReadPassword reads password without echo
+func ReadPassword(hint string) (string, error) {
 	fmt.Print(hint)
 	data, err := term.ReadPassword(int(os.Stdin.Fd()))
 	fmt.Println()

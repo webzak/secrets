@@ -24,7 +24,7 @@ func read() error {
 
 func readEncEnv(name string) error {
 	fmt.Println()
-	master, err := readPassword("storage password: ")
+	master, err := secrets.ReadPassword("storage password: ")
 	if err != nil {
 		return err
 	}
